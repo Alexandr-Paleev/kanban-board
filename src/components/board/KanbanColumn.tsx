@@ -26,7 +26,7 @@ export function KanbanColumn({ column, tasks, onAddTask, onEditTask, onDeleteTas
         <div className="flex items-center gap-2">
           <div className={cn('h-2.5 w-2.5 rounded-full', column.color)} />
           <h2 className="text-sm font-semibold text-slate-700">{column.title}</h2>
-          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500">
+          <span data-testid="task-count" className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500">
             {tasks.length}
           </span>
         </div>
