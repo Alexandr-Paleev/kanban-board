@@ -22,7 +22,7 @@ export const KanbanColumn = memo(
   return (
     <section
       aria-label={`${column.title} column`}
-      className="flex w-72 shrink-0 flex-col gap-3"
+      className="flex w-full flex-col gap-3 md:w-72 md:shrink-0"
     >
       <header className="flex items-center justify-between px-1">
         <div className="flex items-center gap-2">

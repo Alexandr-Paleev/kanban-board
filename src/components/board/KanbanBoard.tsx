@@ -173,7 +173,7 @@ export function KanbanBoard({ filters }: KanbanBoardProps) {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex gap-5 overflow-x-auto pb-6">
+        <div className="flex flex-col gap-4 pb-6 md:flex-row md:gap-5 md:overflow-x-auto">
           {COLUMNS.map(column => (
             <KanbanColumn
               key={column.id}

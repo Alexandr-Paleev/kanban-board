@@ -20,9 +20,9 @@ function BoardSkeleton() {
         <div className="mt-1 h-4 w-40 rounded bg-slate-100 animate-pulse" />
       </div>
       <div className="mb-5 h-10 w-full rounded-lg bg-slate-100 animate-pulse" />
-      <div className="flex gap-5">
+      <div className="flex flex-col gap-4 md:flex-row md:gap-5">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="flex w-72 shrink-0 flex-col gap-3">
+          <div key={i} className="flex w-full flex-col gap-3 md:w-72 md:shrink-0">
             <div className="h-6 w-20 rounded-md bg-slate-200 animate-pulse" />
             {[...Array(2)].map((_, j) => (
               <div key={j} className="h-28 rounded-xl bg-slate-100 animate-pulse" />
