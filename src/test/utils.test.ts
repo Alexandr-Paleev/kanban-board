@@ -10,7 +10,8 @@ describe('cn', () => {
   })
 
   it('ignores falsy values', () => {
-    expect(cn('a', false && 'b', null, undefined)).toBe('a')
+    const falsy = false
+    expect(cn('a', falsy && 'b', null, undefined)).toBe('a')
   })
 })
 
