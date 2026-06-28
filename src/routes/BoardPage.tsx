@@ -4,7 +4,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useUIStore } from '@/store/ui'
 
 export default function BoardPage() {
-  const { filters } = useUIStore()
+  const filters = useUIStore(s => s.filters)
 
   return (
     <main className="mx-auto max-w-screen-2xl px-4 py-4 sm:px-6 sm:py-6">

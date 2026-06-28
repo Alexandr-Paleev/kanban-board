@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Header } from '@/components/layout/Header'
 import { Toaster } from '@/components/ui/Toaster'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useThemeStore } from '@/store/theme'
 
 const BoardPage = lazy(() => import('@/routes/BoardPage'))
@@ -54,9 +55,11 @@ export default function App() {
             <Route
               path="/"
               element={
-                <Suspense fallback={<BoardSkeleton />}>
-                  <BoardPage />
-                </Suspense>
+                <ErrorBoundary>
+                  <Suspense fallback={<BoardSkeleton />}>
+                    <BoardPage />
+                  </Suspense>
+                </ErrorBoundary>
               }
             />
           </Routes>

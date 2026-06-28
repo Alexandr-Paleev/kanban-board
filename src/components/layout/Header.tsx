@@ -28,7 +28,7 @@ function LiveBadge({ lastSync }: { lastSync: Date }) {
 }
 
 export function Header() {
-  const { openCreate } = useUIStore()
+  const openCreate = useUIStore(s => s.openCreate)
   const { theme, toggle } = useThemeStore()
   const lastSync = useLiveSync()
 

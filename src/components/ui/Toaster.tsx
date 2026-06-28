@@ -21,8 +21,6 @@ function ToastItem({ toast }: { toast: Toast }) {
           ? 'border-slate-200 dark:border-slate-600'
           : 'border-red-200 dark:border-red-800',
       )}
-      role="status"
-      aria-live="polite"
     >
       {toast.type === 'success'
         ? <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
@@ -43,10 +41,10 @@ function ToastItem({ toast }: { toast: Toast }) {
 export function Toaster() {
   const toasts = useToastStore(s => s.toasts)
 
-  if (toasts.length === 0) return null
-
   return (
     <div
+      role="log"
+      aria-live="polite"
       aria-label="Notifications"
       className="fixed bottom-4 right-4 z-50 flex flex-col gap-2"
     >

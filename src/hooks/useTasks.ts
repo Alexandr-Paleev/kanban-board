@@ -50,7 +50,7 @@ export function useDeleteTask() {
       return { previous }
     },
     onError: (_err, _id, ctx) => {
-      if (ctx?.previous) qc.setQueryData(TASKS_KEY, ctx.previous)
+      if (ctx?.previous !== undefined) qc.setQueryData(TASKS_KEY, ctx.previous)
       toast('Failed to delete task — changes reverted', 'error')
     },
     onSuccess: () => toast('Task deleted'),
@@ -79,7 +79,7 @@ export function useMoveTask() {
       return { previous }
     },
     onError: (_err, _vars, ctx) => {
-      if (ctx?.previous) qc.setQueryData(TASKS_KEY, ctx.previous)
+      if (ctx?.previous !== undefined) qc.setQueryData(TASKS_KEY, ctx.previous)
       toast('Failed to move task — changes reverted', 'error')
     },
     onSettled: () => qc.invalidateQueries({ queryKey: TASKS_KEY }),
