@@ -12,7 +12,7 @@ import {
 } from '@dnd-kit/core'
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { KanbanColumn } from './KanbanColumn'
-import { TaskCard } from './TaskCard'
+import { TaskCardDragPreview } from './TaskCard'
 import { Dialog } from '@/components/ui/Dialog'
 import { TaskForm, type TaskFormValues } from '@/components/forms/TaskForm'
 import { COLUMNS } from '@/lib/constants'
@@ -189,7 +189,7 @@ export function KanbanBoard({ filters }: KanbanBoardProps) {
         <DragOverlay>
           {activeTask && (
             <div className="rotate-2 opacity-90 shadow-xl">
-              <TaskCard task={activeTask} onEdit={() => {}} onDelete={() => {}} />
+              <TaskCardDragPreview task={activeTask} />
             </div>
           )}
         </DragOverlay>
