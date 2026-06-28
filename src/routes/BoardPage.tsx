@@ -1,5 +1,6 @@
 import { KanbanBoard } from '@/components/board/KanbanBoard'
 import { FilterBar } from '@/components/board/FilterBar'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useUIStore } from '@/store/ui'
 
 export function BoardPage() {
@@ -16,7 +17,9 @@ export function BoardPage() {
         <FilterBar />
       </div>
 
-      <KanbanBoard filters={filters} />
+      <ErrorBoundary>
+        <KanbanBoard filters={filters} />
+      </ErrorBoundary>
     </main>
   )
 }
