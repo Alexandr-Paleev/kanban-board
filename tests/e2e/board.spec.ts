@@ -19,8 +19,8 @@ test.describe('Board rendering', () => {
   })
 
   test('each column displays a task count badge', async ({ page }) => {
-    // Seed has 2 tasks in todo, 2 in_progress, 2 review, 2 done
-    const counts = await page.locator('h2 + span').allTextContents()
+    const counts = await page.locator('[data-testid="task-count"]').allTextContents()
+    expect(counts).toHaveLength(4)
     expect(counts.every(c => /^\d+$/.test(c))).toBe(true)
   })
 

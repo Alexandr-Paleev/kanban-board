@@ -45,11 +45,12 @@ test.describe('Accessibility', () => {
     const dialog = page.getByRole('dialog')
     await expect(dialog).toBeVisible()
 
-    // Close button should be reachable from within the dialog by keyboard
     await page.keyboard.press('Tab')
-    const activeElement = await page.evaluate(() => document.activeElement?.getAttribute('aria-label'))
-    // First focusable inside dialog is the title input
-    expect(['Title', 'Close']).toContain(activeElement ?? 'Title')
+    const focusedInsideDialog = await page.evaluate(() => {
+      const el = document.querySelector('[role="dialog"]')
+      return el?.contains(document.activeElement) ?? false
+    })
+    expect(focusedInsideDialog).toBe(true)
   })
 
   test('"New task" button is reachable by keyboard from the column + button', async ({ page }) => {

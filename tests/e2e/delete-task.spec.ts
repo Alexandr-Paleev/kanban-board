@@ -25,7 +25,7 @@ test.describe('Delete task', () => {
 
   test('decrements the column task count after deletion', async ({ page }) => {
     const doneColumn = page.getByRole('region', { name: 'Done column' })
-    const countBadge = doneColumn.locator('header span.rounded-full')
+    const countBadge = doneColumn.locator('[data-testid="task-count"]')
     const countBefore = Number(await countBadge.textContent())
 
     const card = doneColumn.locator('[aria-label*="Task:"]').first()

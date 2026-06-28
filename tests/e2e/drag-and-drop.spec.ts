@@ -1,11 +1,11 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 
 /**
  * dnd-kit uses PointerEvents. Playwright's dragTo() uses HTML5 drag API
  * which doesn't trigger pointer events, so we simulate the full pointer sequence manually.
  */
 async function dragCard(
-  page: Parameters<typeof test>[1],
+  page: Page,
   sourceLabel: string,
   targetColumnName: string,
 ) {
@@ -13,8 +13,10 @@ async function dragCard(
   const handle = card.getByRole('button', { name: 'Drag to reorder' })
   const target = page.getByRole('region', { name: `${targetColumnName} column` })
 
-  const srcBox = (await handle.boundingBox())!
-  const dstBox = (await target.boundingBox())!
+  const srcBox = await handle.boundingBox()
+  const dstBox = await target.boundingBox()
+  if (!srcBox) throw new Error(`Drag handle not found for task "${sourceLabel}"`)
+  if (!dstBox) throw new Error(`Target column "${targetColumnName}" not found`)
 
   const startX = srcBox.x + srcBox.width / 2
   const startY = srcBox.y + srcBox.height / 2
@@ -33,8 +35,6 @@ async function dragCard(
     )
   }
   await page.mouse.up()
-  // Allow React Query optimistic update to settle
-  await page.waitForTimeout(600)
 }
 
 test.describe('Drag and drop', () => {
@@ -68,8 +68,8 @@ test.describe('Drag and drop', () => {
     const todoColumn = page.getByRole('region', { name: 'To Do column' })
     const inProgressColumn = page.getByRole('region', { name: 'In Progress column' })
 
-    const todoBadge = todoColumn.locator('header span.rounded-full')
-    const inProgressBadge = inProgressColumn.locator('header span.rounded-full')
+    const todoBadge = todoColumn.locator('[data-testid="task-count"]')
+    const inProgressBadge = inProgressColumn.locator('[data-testid="task-count"]')
 
     const todoBefore = Number(await todoBadge.textContent())
     const inProgressBefore = Number(await inProgressBadge.textContent())
