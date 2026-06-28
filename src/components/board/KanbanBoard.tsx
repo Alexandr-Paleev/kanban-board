@@ -179,9 +179,9 @@ export function KanbanBoard({ filters }: KanbanBoardProps) {
               key={column.id}
               column={column}
               tasks={tasksByColumn[column.id]}
-              onAddTask={() => handleAddTask(column.id)}
+              onAddTask={handleAddTask}
               onEditTask={openEdit}
-              onDeleteTask={id => deleteTask.mutate(id)}
+              onDeleteTask={deleteTask.mutate}
             />
           ))}
         </div>

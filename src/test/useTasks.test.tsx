@@ -41,7 +41,7 @@ function makeWrapper() {
   }
 }
 
-beforeEach(() => vi.clearAllMocks())
+beforeEach(() => vi.resetAllMocks())
 
 describe('useTasks', () => {
   it('fetches task list from api and returns it', async () => {

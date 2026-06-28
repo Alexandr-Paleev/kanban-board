@@ -59,6 +59,7 @@ test.describe('Task CRUD', () => {
 
     const card = cards.first()
     const title = await card.getAttribute('aria-label')
+    expect(title).not.toBeNull()
     await card.hover()
     await card.locator('[aria-label="Delete task"]').click()
 

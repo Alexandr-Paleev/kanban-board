@@ -1,3 +1,4 @@
+import { useId } from 'react'
 import * as RadixDialog from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -12,6 +13,8 @@ interface DialogProps {
 }
 
 export function Dialog({ open, onOpenChange, title, description, children, className }: DialogProps) {
+  const descId = useId()
+
   return (
     <RadixDialog.Root open={open} onOpenChange={onOpenChange}>
       <RadixDialog.Portal>
@@ -21,7 +24,7 @@ export function Dialog({ open, onOpenChange, title, description, children, class
             'fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 w-full max-w-md rounded-xl bg-white dark:bg-slate-800 shadow-2xl animate-in fade-in-0 zoom-in-95 focus:outline-none',
             className,
           )}
-          aria-describedby={description ? 'dialog-desc' : undefined}
+          aria-describedby={description ? descId : undefined}
         >
           <div className="flex items-start justify-between p-5 border-b border-slate-100 dark:border-slate-700">
             <div>
@@ -29,7 +32,7 @@ export function Dialog({ open, onOpenChange, title, description, children, class
                 {title}
               </RadixDialog.Title>
               {description && (
-                <RadixDialog.Description id="dialog-desc" className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                <RadixDialog.Description id={descId} className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
                   {description}
                 </RadixDialog.Description>
               )}

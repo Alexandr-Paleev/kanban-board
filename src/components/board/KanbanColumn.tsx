@@ -5,12 +5,12 @@ import { Plus } from 'lucide-react'
 import { TaskCard } from './TaskCard'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
-import type { Column, Task } from '@/types'
+import type { Column, ColumnId, Task } from '@/types'
 
 interface KanbanColumnProps {
   column: Column
   tasks: Task[]
-  onAddTask: () => void
+  onAddTask: (columnId: ColumnId) => void
   onEditTask: (task: Task) => void
   onDeleteTask: (id: string) => void
 }
@@ -28,7 +28,7 @@ export const KanbanColumn = memo(
         <div className="flex items-center gap-2">
           <div className={cn('h-2.5 w-2.5 rounded-full', column.color)} />
           <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">{column.title}</h2>
-          <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs font-medium text-slate-500 dark:text-slate-400">
+          <span data-testid="task-count" className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs font-medium text-slate-500 dark:text-slate-400">
             {tasks.length}
           </span>
         </div>
@@ -36,7 +36,7 @@ export const KanbanColumn = memo(
           size="icon"
           variant="ghost"
           className="h-7 w-7"
-          onClick={onAddTask}
+          onClick={() => onAddTask(column.id)}
           aria-label={`Add task to ${column.title}`}
         >
           <Plus className="h-4 w-4" />
