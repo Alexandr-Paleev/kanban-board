@@ -3,7 +3,7 @@ import { FilterBar } from '@/components/board/FilterBar'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useUIStore } from '@/store/ui'
 
-export function BoardPage() {
+export default function BoardPage() {
   const { filters } = useUIStore()
 
   return (

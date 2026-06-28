@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { GripVertical, Trash2, Pencil } from 'lucide-react'
@@ -15,7 +16,7 @@ interface TaskCardProps {
   isDraggingOver?: boolean
 }
 
-export function TaskCard({ task, onEdit, onDelete, isDraggingOver }: TaskCardProps) {
+export const TaskCard = memo(function TaskCard({ task, onEdit, onDelete, isDraggingOver }: TaskCardProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: task.id,
     data: { type: 'task', task },
@@ -107,4 +108,4 @@ export function TaskCard({ task, onEdit, onDelete, isDraggingOver }: TaskCardPro
       </div>
     </article>
   )
-}
+})

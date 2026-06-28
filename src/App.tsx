@@ -1,14 +1,38 @@
+import { lazy, Suspense } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Header } from '@/components/layout/Header'
-import { BoardPage } from '@/routes/BoardPage'
 import { Toaster } from '@/components/ui/Toaster'
+
+const BoardPage = lazy(() => import('@/routes/BoardPage'))
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: { staleTime: 30_000, retry: 1 },
   },
 })
+
+function BoardSkeleton() {
+  return (
+    <div className="mx-auto max-w-screen-2xl px-6 py-6">
+      <div className="mb-5">
+        <div className="h-7 w-16 rounded-md bg-slate-200 animate-pulse" />
+        <div className="mt-1 h-4 w-40 rounded bg-slate-100 animate-pulse" />
+      </div>
+      <div className="mb-5 h-10 w-full rounded-lg bg-slate-100 animate-pulse" />
+      <div className="flex gap-5">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="flex w-72 shrink-0 flex-col gap-3">
+            <div className="h-6 w-20 rounded-md bg-slate-200 animate-pulse" />
+            {[...Array(2)].map((_, j) => (
+              <div key={j} className="h-28 rounded-xl bg-slate-100 animate-pulse" />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export default function App() {
   return (
@@ -17,7 +41,14 @@ export default function App() {
         <div className="min-h-screen bg-slate-50">
           <Header />
           <Routes>
-            <Route path="/" element={<BoardPage />} />
+            <Route
+              path="/"
+              element={
+                <Suspense fallback={<BoardSkeleton />}>
+                  <BoardPage />
+                </Suspense>
+              }
+            />
           </Routes>
           <Toaster />
         </div>
