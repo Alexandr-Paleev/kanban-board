@@ -12,7 +12,7 @@ import {
 } from '@dnd-kit/core'
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { KanbanColumn } from './KanbanColumn'
-import { TaskCard } from './TaskCard'
+import { TaskCardDragPreview } from './TaskCard'
 import { Dialog } from '@/components/ui/Dialog'
 import { TaskForm, type TaskFormValues } from '@/components/forms/TaskForm'
 import { COLUMNS } from '@/lib/constants'
@@ -173,15 +173,15 @@ export function KanbanBoard({ filters }: KanbanBoardProps) {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex gap-5 overflow-x-auto pb-6">
+        <div className="flex flex-col gap-4 pb-6 md:flex-row md:gap-5 md:overflow-x-auto">
           {COLUMNS.map(column => (
             <KanbanColumn
               key={column.id}
               column={column}
               tasks={tasksByColumn[column.id]}
-              onAddTask={() => handleAddTask(column.id)}
+              onAddTask={handleAddTask}
               onEditTask={openEdit}
-              onDeleteTask={id => deleteTask.mutate(id)}
+              onDeleteTask={deleteTask.mutate}
             />
           ))}
         </div>
@@ -189,7 +189,7 @@ export function KanbanBoard({ filters }: KanbanBoardProps) {
         <DragOverlay>
           {activeTask && (
             <div className="rotate-2 opacity-90 shadow-xl">
-              <TaskCard task={activeTask} onEdit={() => {}} onDelete={() => {}} />
+              <TaskCardDragPreview task={activeTask} />
             </div>
           )}
         </DragOverlay>

@@ -48,8 +48,11 @@ test.describe('Board rendering', () => {
   })
 
   test('shows empty state when column has no tasks (after filtering all out)', async ({ page }) => {
-    // Filter by a non-existing search string to empty all columns
     await page.getByPlaceholder('Search tasks…').fill('xyznonexistent999')
     await expect(page.getByText('No tasks').first()).toBeVisible()
+  })
+
+  test('header shows Live badge', async ({ page }) => {
+    await expect(page.locator('text=Live')).toBeVisible()
   })
 })

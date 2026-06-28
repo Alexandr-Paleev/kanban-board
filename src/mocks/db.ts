@@ -108,11 +108,19 @@ export const db = {
 
     update: (id: string, patch: Partial<Omit<Task, 'id' | 'createdAt'>>): Task => {
       tasks = tasks.map(t => (t.id === id ? { ...t, ...patch, updatedAt: now() } : t))
-      return tasks.find(t => t.id === id)!
+      const task = tasks.find(t => t.id === id)
+      if (!task) throw new Error(`Task ${id} not found`)
+      return task
     },
 
     delete: (id: string): void => {
       tasks = tasks.filter(t => t.id !== id)
+    },
+
+    randomTouch: (): void => {
+      if (tasks.length === 0) return
+      const target = tasks[Math.floor(Math.random() * tasks.length)]
+      tasks = tasks.map(t => (t.id === target.id ? { ...t, updatedAt: now() } : t))
     },
 
     reorder: (taskId: string, targetColumnId: Task['columnId'], afterTaskId: string | null): Task => {
@@ -130,7 +138,12 @@ export const db = {
         }
       } else {
         const afterIdx = tasks.findIndex(t => t.id === afterTaskId)
-        tasks = [...tasks.slice(0, afterIdx + 1), updated, ...tasks.slice(afterIdx + 1)]
+        if (afterIdx === -1) {
+          // afterTaskId was deleted concurrently (e.g. by live sync) — append to end of column
+          tasks = [...tasks, updated]
+        } else {
+          tasks = [...tasks.slice(0, afterIdx + 1), updated, ...tasks.slice(afterIdx + 1)]
+        }
       }
 
       return updated
