@@ -16,8 +16,10 @@ function ToastItem({ toast }: { toast: Toast }) {
   return (
     <div
       className={cn(
-        'toast-in flex items-start gap-3 rounded-lg border px-4 py-3 shadow-lg text-sm min-w-72 bg-white',
-        toast.type === 'success' ? 'border-slate-200' : 'border-red-200',
+        'toast-in flex items-start gap-3 rounded-lg border px-4 py-3 shadow-lg text-sm min-w-72 bg-white dark:bg-slate-800',
+        toast.type === 'success'
+          ? 'border-slate-200 dark:border-slate-600'
+          : 'border-red-200 dark:border-red-800',
       )}
       role="status"
       aria-live="polite"
@@ -26,10 +28,10 @@ function ToastItem({ toast }: { toast: Toast }) {
         ? <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
         : <XCircle className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
       }
-      <span className="flex-1 text-slate-800">{toast.message}</span>
+      <span className="flex-1 text-slate-800 dark:text-slate-100">{toast.message}</span>
       <button
         onClick={() => remove(toast.id)}
-        className="text-slate-400 hover:text-slate-600 transition-colors"
+        className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
         aria-label="Dismiss"
       >
         <X className="h-4 w-4" />

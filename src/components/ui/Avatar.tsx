@@ -14,7 +14,7 @@ export function Avatar({ src, alt, size = 'sm', className }: AvatarProps) {
       alt={alt}
       title={alt}
       className={cn(
-        'rounded-full border-2 border-white object-cover',
+        'rounded-full border-2 border-white dark:border-slate-700 object-cover',
         size === 'sm' ? 'h-6 w-6' : 'h-8 w-8',
         className,
       )}

@@ -85,7 +85,7 @@ export function TaskForm({ defaultValues, onSubmit, onCancel, isLoading }: TaskF
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col gap-4" noValidate>
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="title" className="text-sm font-medium text-slate-700">
+        <label htmlFor="title" className="text-sm font-medium text-slate-700 dark:text-slate-300">
           Title <span className="text-red-500">*</span>
         </label>
         <Input
@@ -97,7 +97,7 @@ export function TaskForm({ defaultValues, onSubmit, onCancel, isLoading }: TaskF
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="description" className="text-sm font-medium text-slate-700">
+        <label htmlFor="description" className="text-sm font-medium text-slate-700 dark:text-slate-300">
           Description
         </label>
         <Textarea
@@ -110,7 +110,7 @@ export function TaskForm({ defaultValues, onSubmit, onCancel, isLoading }: TaskF
 
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-slate-700">Priority</label>
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Priority</label>
           <Controller
             name="priority"
             control={control}
@@ -125,7 +125,7 @@ export function TaskForm({ defaultValues, onSubmit, onCancel, isLoading }: TaskF
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-slate-700">Status</label>
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Status</label>
           <Controller
             name="columnId"
             control={control}
@@ -141,7 +141,7 @@ export function TaskForm({ defaultValues, onSubmit, onCancel, isLoading }: TaskF
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-slate-700">Assignee</label>
+        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Assignee</label>
         <Controller
           name="assigneeId"
           control={control}
@@ -157,7 +157,7 @@ export function TaskForm({ defaultValues, onSubmit, onCancel, isLoading }: TaskF
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-slate-700">Tags</label>
+        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Tags</label>
         <div className="flex flex-wrap gap-2">
           {MOCK_TAGS.map(tag => (
             <button
@@ -177,7 +177,7 @@ export function TaskForm({ defaultValues, onSubmit, onCancel, isLoading }: TaskF
         </div>
       </div>
 
-      <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+      <div className="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
         <Button type="button" variant="secondary" onClick={onCancel}>
           Cancel
         </Button>

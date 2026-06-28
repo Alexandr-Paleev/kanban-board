@@ -37,29 +37,29 @@ export const TaskCard = memo(function TaskCard({ task, onEdit, onDelete, isDragg
       style={style}
       aria-label={`Task: ${task.title}`}
       className={cn(
-        'group relative rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm transition-all',
+        'group relative rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3.5 shadow-sm transition-all',
         isDragging && 'opacity-40 ring-2 ring-indigo-400',
         isDraggingOver && 'ring-2 ring-indigo-300',
-        !isDragging && 'hover:shadow-md hover:border-slate-300',
+        !isDragging && 'hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600',
       )}
     >
       <div className="flex items-start gap-2">
         <button
           {...attributes}
           {...listeners}
-          className="mt-0.5 cursor-grab touch-none text-slate-300 hover:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded"
+          className="mt-0.5 cursor-grab touch-none text-slate-300 dark:text-slate-600 hover:text-slate-500 dark:hover:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded"
           aria-label="Drag to reorder"
         >
           <GripVertical className="h-4 w-4" />
         </button>
 
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-slate-800 leading-snug line-clamp-2">
+          <p className="text-sm font-medium text-slate-800 dark:text-slate-100 leading-snug line-clamp-2">
             {task.title}
           </p>
 
           {task.description && (
-            <p className="mt-1 text-xs text-slate-500 line-clamp-2">{task.description}</p>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 line-clamp-2">{task.description}</p>
           )}
 
           {tags.length > 0 && (
@@ -79,7 +79,7 @@ export const TaskCard = memo(function TaskCard({ task, onEdit, onDelete, isDragg
             <Badge className={priority.color}>{priority.label}</Badge>
 
             <div className="flex items-center gap-2 ml-auto">
-              <span className="text-xs text-slate-400">{formatDate(task.updatedAt)}</span>
+              <span className="text-xs text-slate-400 dark:text-slate-500">{formatDate(task.updatedAt)}</span>
               {assignee && <Avatar src={assignee.avatarUrl} alt={assignee.name} />}
             </div>
           </div>
@@ -99,7 +99,7 @@ export const TaskCard = memo(function TaskCard({ task, onEdit, onDelete, isDragg
         <Button
           size="icon"
           variant="ghost"
-          className="h-7 w-7 text-red-500 hover:text-red-700 hover:bg-red-50"
+          className="h-7 w-7 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
           onClick={() => onDelete(task.id)}
           aria-label="Delete task"
         >

@@ -27,8 +27,8 @@ export const KanbanColumn = memo(
       <header className="flex items-center justify-between px-1">
         <div className="flex items-center gap-2">
           <div className={cn('h-2.5 w-2.5 rounded-full', column.color)} />
-          <h2 className="text-sm font-semibold text-slate-700">{column.title}</h2>
-          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500">
+          <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">{column.title}</h2>
+          <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs font-medium text-slate-500 dark:text-slate-400">
             {tasks.length}
           </span>
         </div>
@@ -47,7 +47,7 @@ export const KanbanColumn = memo(
         ref={setNodeRef}
         className={cn(
           'flex flex-col gap-2 rounded-xl min-h-24 p-1 transition-colors',
-          isOver && 'bg-indigo-50 ring-2 ring-indigo-200',
+          isOver && 'bg-indigo-50 dark:bg-indigo-950 ring-2 ring-indigo-200 dark:ring-indigo-800',
         )}
       >
         <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
@@ -63,7 +63,7 @@ export const KanbanColumn = memo(
         </SortableContext>
 
         {tasks.length === 0 && !isOver && (
-          <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-slate-200 py-8 text-xs text-slate-400">
+          <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-slate-200 dark:border-slate-700 py-8 text-xs text-slate-400 dark:text-slate-500">
             No tasks
           </div>
         )}
