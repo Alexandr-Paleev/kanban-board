@@ -115,6 +115,12 @@ export const db = {
       tasks = tasks.filter(t => t.id !== id)
     },
 
+    randomTouch: (): void => {
+      if (tasks.length === 0) return
+      const target = tasks[Math.floor(Math.random() * tasks.length)]
+      tasks = tasks.map(t => (t.id === target.id ? { ...t, updatedAt: now() } : t))
+    },
+
     reorder: (taskId: string, targetColumnId: Task['columnId'], afterTaskId: string | null): Task => {
       const task = tasks.find(t => t.id === taskId)!
       const updated = { ...task, columnId: targetColumnId, updatedAt: now() }
