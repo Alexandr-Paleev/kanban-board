@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Header } from '@/components/layout/Header'
 import { BoardPage } from '@/routes/BoardPage'
+import { Toaster } from '@/components/ui/Toaster'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,6 +19,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<BoardPage />} />
           </Routes>
+          <Toaster />
         </div>
       </BrowserRouter>
     </QueryClientProvider>
