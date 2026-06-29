@@ -29,6 +29,8 @@ npx playwright test # run E2E tests
 | API mock | MSW v2 | Intercepts at network level — real `fetch` calls, swap for real API with zero code changes |
 | Unit tests | Vitest + RTL | Same config as Vite, no extra babel; RTL ensures testing user behaviour not internals |
 | E2E tests | Playwright | Full browser automation: CRUD, drag-and-drop, filters, keyboard navigation, a11y |
+| Dark mode | Tailwind `dark:` + Zustand persist | Class-based toggle, FOUC-free inline script in `index.html`, syncs with system preference |
+| CI | GitHub Actions | Two jobs: `unit` (lint + tsc + vitest) and `e2e` (Playwright + browser cache + artifact upload on failure) |
 
 ## Architecture
 
@@ -70,5 +72,4 @@ src/
 - **Virtualization** — with hundreds of cards per column, `@tanstack/react-virtual` would be added inside `KanbanColumn`
 - **Optimistic reorder** — the current optimistic update only patches `columnId`, not the visual order within a column; a full solution would store an explicit `order` field
 - **Auth** — no authentication layer; a real app would wrap routes in a `<RequireAuth>` guard and store the JWT in an httpOnly cookie
-- **Dark mode** — a theme toggle persisting to `localStorage` with Tailwind's `dark:` variant classes would improve UX for low-light environments
 - **i18n** — `react-i18next` would be added with a `locales/` directory

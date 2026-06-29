@@ -36,7 +36,12 @@ export function KanbanBoard({ filters }: KanbanBoardProps) {
   const deleteTask = useDeleteTask()
   const moveTask = useMoveTask()
 
-  const { editingTask, isCreateOpen, openEdit, closeEdit, openCreate, closeCreate } = useUIStore()
+  const editingTask = useUIStore(s => s.editingTask)
+  const isCreateOpen = useUIStore(s => s.isCreateOpen)
+  const openEdit = useUIStore(s => s.openEdit)
+  const closeEdit = useUIStore(s => s.closeEdit)
+  const openCreate = useUIStore(s => s.openCreate)
+  const closeCreate = useUIStore(s => s.closeCreate)
   const [createColumnId, setCreateColumnId] = useState<ColumnId>('todo')
   const [activeTask, setActiveTask] = useState<Task | null>(null)
 
