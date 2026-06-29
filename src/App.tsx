@@ -47,7 +47,7 @@ function ThemeApplier() {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <ThemeApplier />
         <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
           <Header />
