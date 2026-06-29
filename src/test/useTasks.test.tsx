@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
-import { useTasks, useCreateTask, useDeleteTask } from '@/hooks/useTasks'
+import { useTasks, useCreateTask, useDeleteTask, useUpdateTask, useMoveTask } from '@/hooks/useTasks'
 import { api } from '@/lib/api'
 import type { Task } from '@/types'
 
@@ -113,6 +113,73 @@ describe('useDeleteTask', () => {
     const { result: del } = renderHook(() => useDeleteTask(), { wrapper })
     await act(async () => { del.current.mutate(TASK.id) })
     await waitFor(() => expect(del.current.isError).toBe(true))
+
+    expect(qc.getQueryData<Task[]>(['tasks'])).toEqual([TASK])
+    qc.clear()
+  })
+})
+
+describe('useUpdateTask', () => {
+  it('patches the updated task in cache on success', async () => {
+    const updated: Task = { ...TASK, title: 'Updated title', priority: 'high' }
+    vi.mocked(api.tasks.list).mockResolvedValue([TASK])
+    vi.mocked(api.tasks.update).mockResolvedValue(updated)
+
+    const { qc, wrapper } = makeWrapper()
+    const { result: tasks } = renderHook(() => useTasks(), { wrapper })
+    await waitFor(() => expect(tasks.current.isSuccess).toBe(true))
+
+    const { result: update } = renderHook(() => useUpdateTask(), { wrapper })
+    await act(async () => {
+      update.current.mutate({ id: TASK.id, patch: { title: 'Updated title', priority: 'high' } })
+    })
+    await waitFor(() => expect(update.current.isSuccess).toBe(true))
+
+    const cached = qc.getQueryData<Task[]>(['tasks'])
+    expect(cached).toEqual([updated])
+    qc.clear()
+  })
+})
+
+describe('useMoveTask', () => {
+  it('optimistically patches columnId before the request resolves', async () => {
+    let resolveMove!: (t: Task) => void
+    vi.mocked(api.tasks.list).mockResolvedValue([TASK])
+    vi.mocked(api.tasks.move).mockReturnValue(
+      new Promise<Task>(res => { resolveMove = res }),
+    )
+
+    const { qc, wrapper } = makeWrapper()
+    const { result: tasks } = renderHook(() => useTasks(), { wrapper })
+    await waitFor(() => expect(tasks.current.isSuccess).toBe(true))
+
+    const { result: move } = renderHook(() => useMoveTask(), { wrapper })
+    act(() => {
+      move.current.mutate({ id: TASK.id, columnId: 'done', afterTaskId: null })
+    })
+
+    await waitFor(() => {
+      const cached = qc.getQueryData<Task[]>(['tasks'])
+      return cached?.[0]?.columnId === 'done'
+    })
+
+    resolveMove({ ...TASK, columnId: 'done' })
+    qc.clear()
+  })
+
+  it('rolls back columnId when move fails', async () => {
+    vi.mocked(api.tasks.list).mockResolvedValue([TASK])
+    vi.mocked(api.tasks.move).mockRejectedValue(new Error('Network error'))
+
+    const { qc, wrapper } = makeWrapper()
+    const { result: tasks } = renderHook(() => useTasks(), { wrapper })
+    await waitFor(() => expect(tasks.current.isSuccess).toBe(true))
+
+    const { result: move } = renderHook(() => useMoveTask(), { wrapper })
+    await act(async () => {
+      move.current.mutate({ id: TASK.id, columnId: 'done', afterTaskId: null })
+    })
+    await waitFor(() => expect(move.current.isError).toBe(true))
 
     expect(qc.getQueryData<Task[]>(['tasks'])).toEqual([TASK])
     qc.clear()
