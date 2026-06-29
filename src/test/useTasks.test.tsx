@@ -139,6 +139,24 @@ describe('useUpdateTask', () => {
     expect(cached).toEqual([updated])
     qc.clear()
   })
+
+  it('leaves cache unchanged when update fails', async () => {
+    vi.mocked(api.tasks.list).mockResolvedValue([TASK])
+    vi.mocked(api.tasks.update).mockRejectedValue(new Error('Server error'))
+
+    const { qc, wrapper } = makeWrapper()
+    const { result: tasks } = renderHook(() => useTasks(), { wrapper })
+    await waitFor(() => expect(tasks.current.isSuccess).toBe(true))
+
+    const { result: update } = renderHook(() => useUpdateTask(), { wrapper })
+    await act(async () => {
+      update.current.mutate({ id: TASK.id, patch: { title: 'New title' } })
+    })
+    await waitFor(() => expect(update.current.isError).toBe(true))
+
+    expect(qc.getQueryData<Task[]>(['tasks'])).toEqual([TASK])
+    qc.clear()
+  })
 })
 
 describe('useMoveTask', () => {
@@ -159,28 +177,43 @@ describe('useMoveTask', () => {
     })
 
     await waitFor(() => {
-      const cached = qc.getQueryData<Task[]>(['tasks'])
-      return cached?.[0]?.columnId === 'done'
+      expect(qc.getQueryData<Task[]>(['tasks'])?.[0]?.columnId).toBe('done')
     })
 
-    resolveMove({ ...TASK, columnId: 'done' })
+    await act(async () => {
+      resolveMove({ ...TASK, columnId: 'done' })
+    })
     qc.clear()
   })
 
   it('rolls back columnId when move fails', async () => {
+    let rejectMove!: (err: Error) => void
     vi.mocked(api.tasks.list).mockResolvedValue([TASK])
-    vi.mocked(api.tasks.move).mockRejectedValue(new Error('Network error'))
+    vi.mocked(api.tasks.move).mockReturnValue(
+      new Promise<Task>((_, rej) => { rejectMove = rej }),
+    )
 
     const { qc, wrapper } = makeWrapper()
     const { result: tasks } = renderHook(() => useTasks(), { wrapper })
     await waitFor(() => expect(tasks.current.isSuccess).toBe(true))
 
     const { result: move } = renderHook(() => useMoveTask(), { wrapper })
-    await act(async () => {
+    act(() => {
       move.current.mutate({ id: TASK.id, columnId: 'done', afterTaskId: null })
+    })
+
+    // Confirm optimistic patch applied
+    await waitFor(() => {
+      expect(qc.getQueryData<Task[]>(['tasks'])?.[0]?.columnId).toBe('done')
+    })
+
+    // Reject move → triggers onError rollback
+    await act(async () => {
+      rejectMove(new Error('Network error'))
     })
     await waitFor(() => expect(move.current.isError).toBe(true))
 
+    // Cache must be restored by onError, not just by refetch
     expect(qc.getQueryData<Task[]>(['tasks'])).toEqual([TASK])
     qc.clear()
   })

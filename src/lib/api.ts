@@ -1,17 +1,11 @@
 import type { Task } from '@/types'
 
-async function request<T>(url: string, init?: RequestInit, attempt = 0): Promise<T> {
+async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, {
     headers: { 'Content-Type': 'application/json' },
-    cache: 'no-store',
     ...init,
+    cache: 'no-store',
   })
-  // 304 means MSW service worker isn't active yet (dev-only race on startup).
-  // Retry once after a short delay so the worker can finish activating.
-  if (res.status === 304 && attempt === 0) {
-    await new Promise(r => setTimeout(r, 300))
-    return request<T>(url, init, 1)
-  }
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
   if (res.status === 204) return undefined as T
   return res.json() as Promise<T>
