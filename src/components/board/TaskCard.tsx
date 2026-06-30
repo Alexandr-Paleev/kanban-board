@@ -69,7 +69,7 @@ function CardBody({
         </div>
       </div>
 
-      <div className="absolute right-2 top-2 hidden group-hover:flex group-focus-within:flex gap-0.5">
+      <div className="absolute right-2 top-2 flex md:hidden md:group-hover:flex md:group-focus-within:flex gap-0.5">
         <Button
           size="icon"
           variant="ghost"
